@@ -111,8 +111,3 @@ exactly at 110 °C (C57.91 reference); preventive failure rate ≈ 0.05 /asset/y
 range). Failures include an **unpreventable external floor** and **contingency overload trips**, so
 SAIFI = 0 is impossible by design. Field validation on a real network is out of scope (it would be a
 pilot study). Full limitations: `FORMULATION.md` §14 and the datasheet.
-
-## License & citation
-**Data:** CC BY 4.0. **Code:** MIT. See `LICENSE`. Built on pandapower's published test networks
-(CIGRE TF C6.04.02 MV benchmark; mv_oberrhein). If you use SiMetrics, please cite this repository and
-pandapower (Thurner et al., *IEEE Trans. Power Systems*, 2018).
