@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+data/simetrics_benchmark/*.npz
+data/simetrics_benchmark/data/*.npz
