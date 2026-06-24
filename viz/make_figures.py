@@ -59,7 +59,7 @@ def fig_journey(case):
     # (A) fleet mean RUL , the ups & downs of asset health
     ax[0].plot(t, rea["rul"].astype(float).mean(1), color=C_REACT, lw=1.2, label="reactive (run-to-failure)")
     ax[0].plot(t, pre["rul"].astype(float).mean(1), color=C_PREV, lw=1.2, label="preventive 2x/yr")
-    ax[0].set_ylabel("fleet mean RUL\n(health, 10=new 0=dead)"); ax[0].legend(loc="upper right", fontsize=8)
+    ax[0].set_ylabel("mean RUL across all assets\n(health, 10=new, 0=dead)"); ax[0].legend(loc="upper right", fontsize=8)
     ax[0].set_title(f"SiMetrics , 5-year journey ({case})", fontweight="bold")
     ax[0].grid(alpha=0.3)
 

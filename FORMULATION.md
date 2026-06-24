@@ -1,5 +1,4 @@
-# FORMULATION , Every Physics-Informed Computation, Explained Slowly
-### SiMetrics v0.3.0 · so it can be presented without doubt: where inputs come from, the process, the math, the outputs.
+### SiMetrics v0.3.0
 
 > **How to read:** every "guardrail" (physics constraint) follows a fixed pattern ,
 > **WHAT (plain language) -> INPUT -> FORMULA -> CONSTANTS (value + reason + standard) -> OUTPUT ->
@@ -103,6 +102,56 @@ to any utility's failure history (such data is not public). **Code:** `engine.py
 **Formula:** `PoF = clip(1 − RUL/4, 0, 1)`. **Constant:** `RUL_FULL=4.0` (PoF ramps over the last 4
 RUL-units). RUL≥4 → PoF=0 (healthy); RUL=0 → PoF=1 (critical). **Code:** `engine.py`.
 
+### §6a. What the headline AUC measures (vs RUL) — read this before quoting 0.843
+The reference leaderboard scores **Task 1 (failure prognosis)**, which is a **binary classification**,
+not a lifetime regression. For each `(asset, day)` row it predicts `P(a wear-out failure occurs within
+the next H=90 days)` from **observables only** (loading/hot-spot windows, days-since-service, static
+physical features — see `evaluate.py:build_xy`). The model output is therefore a **risk score in
+`[0,1]` per asset per day** — not a class label, and not a calendar lifetime. ROC-AUC then measures
+*ranking* quality (threshold-free): the probability that a truly-failing row is scored above a
+non-failing one; Average Precision is reported alongside because positives are rare (~5%). The label
+counts **wear failures only** (event code 0); the unpreventable external floor (§7b) and contingency
+trips (§7c) are excluded, since no maintenance policy can pre-empt them.
+
+**RUL is a different, separate task.** `rul` is the hidden ground-truth "fuel gauge" (0–10 RUL-units,
+**not years** — §10), shipped as a *label*. Regressing it is **Task 1b** (metric: MAE/RMSE), which the
+shipped harness deliberately does **not** score — it is left open for users. So the headline number
+**AUC = 0.843 is the 90-day failure-classification score, never an RUL accuracy.** A continuous RUL
+prediction — the predicted-vs-true "fuel gauge" trajectory rising and falling over time, the way a
+forecast is overlaid on a price series — is an optional T1b deliverable; a reference example is in
+`viz/make_rul_trajectory.py` (fig7).
+
+### §6b. Why a high AUC does NOT make a good policy (prediction ≠ decision)
+A recurring, important result in this benchmark: the model with the best Task-1 ROC-AUC (MLP, 0.843)
+can be one of the **worst** maintenance policies (see `viz/make_paradigm_shift.py`, fig8). This is not a
+bug , it is the reason the benchmark scores the **decision** (Task 3), not just **prediction** (Task 1).
+ROC-AUC and policy-SAIFI measure fundamentally different things:
+
+- **Threshold-free ranking vs a real cutoff.** AUC only asks "is a failing asset-day ranked above a
+  healthy one?"; it never commits to a cutoff. A policy must. A model can rank well yet have no cutoff
+  that cleanly separates "visit" from "skip" at a sensible budget , its scores may pile healthy assets
+  near risky ones, so catching the few failures also flags a flood of healthy ones (over-servicing).
+  Tree models (RF/HistGB) concentrate scores and isolate the risky tail; linear/MLP do not, and
+  over-service massively in our runs.
+- **Distribution shift / feedback loop.** AUC is measured on **static reactive-run data** , the regime
+  the model trained on. Once the model *drives* maintenance, assets get serviced and rarely reach
+  end-of-life, so the feature distribution becomes a healthier, censored regime the model never saw.
+  Flexible models (MLP) extrapolate unpredictably off their training manifold; tree partitions degrade
+  more gracefully. The on-distribution AUC edge need not survive the shift.
+- **Temporal consistency.** A policy acts every day; a score that jitters day-to-day mistimes visits.
+  AUC, computed on independently sampled rows, is blind to temporal stability.
+- **Objective mismatch.** AUC rewards correct ranking of *all* asset-days equally; SAIFI rewards
+  preventing the *few high-customer-impact* failures at low visit cost. Optimizing discrimination is
+  not optimizing the operational objective.
+
+**Takeaway.** A high AUC is necessary-ish but **not sufficient** for a good decision policy , the classic
+*offline-metric vs online-decision gap*. This is exactly why SiMetrics scores the decision (Task 3:
+SAIFI/SAIDI at iso-budget), and why a sound approach should **learn the policy** (e.g. MARL on the
+SAIFI objective) rather than bolt a threshold onto a good classifier. *(Caveat: the specific
+over-servicing of linear/MLP also reflects the simple threshold rule and thresholds taken from the
+reactive distribution; better per-regime calibration would help them somewhat , but the gap, and the
+lesson, are real.)*
+
 ## §7. Three failure channels (honest: no policy can reach SAIFI=0)
 ### §7a. Wear-out , prognosable
 ```
@@ -177,7 +226,7 @@ TOTAL wasted life          = Σ (RUL at visit time)  over ALL planned visits
 for but did not use. Preventive is wasteful (services healthy assets); predictive is lean (services just
 before failure). **Code:** `engine.py` (`wasted += RUL[k].sum()`).
 
-## §11. SEED , explained EXTRA-slowly (from scratch)
+## §11. SEED
 **Step 1 , why computer "randomness" is not truly random.** A computer uses a **formula** (a PRNG, e.g.
 Mersenne Twister) that emits a sequence that **looks random** but is **entirely determined** by one
 starting number = the **seed**.
@@ -223,7 +272,7 @@ Different seed → a different but **statistically equivalent** "parallel 5 year
   7.8× fleet mean), cascade substrate (lift 2.31× vs null 1.49, z=8.8; stripped-engine control 0.98),
   separability (p≈4×10⁻²⁴), learnability (AUC 0.79), integrity + 713 verified explanation rows.
 
-## §14. Known limitations (state these to a committee)
+## §14. Known limitations
 Synthetic calibrated wear (not fitted to real utility failure data); demand = one snapshot × seasonal
 curve (no AMI profiles); no weather/vegetation model; coupling uses the first-success tie only;
 customers proportional to load (600/MW); cosmetic coordinates; chronic normal-state overloads in the

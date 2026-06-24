@@ -2,7 +2,7 @@
 engine.py , UNIFIED benchmark-grade distribution PdM simulation engine (SiMetrics).
 
 Single source of truth for the shareable benchmark. ALL numeric constants live in params.py;
-this file contains only the (transparent) logic. See FORMULATION.md for a slow, equation-by-
+this file contains only the (transparent) logic. See FORMULATION.md for equation-by-
 equation walkthrough of every physics-informed guardrail below.
 
 MODEL CARD (honest, complete , everything a user needs to trust/criticise the data)
@@ -163,7 +163,7 @@ EV_FAIL_WEAR, EV_FAIL_EXT, EV_MAINT, EV_REPAIR_DONE, EV_TRIP, EV_RECLOSE = 0, 1,
 
 
 def simulate(top, policy, seed, years=DEFAULT_YEARS, rounds_per_year=DEFAULT_ROUNDS_PER_YEAR,
-             predict_thresh=DEFAULT_PREDICT_THRESH, record=True):
+             predict_thresh=DEFAULT_PREDICT_THRESH, record=True, score_fn=None):
     """One full run. Returns summary + (if record) daily logs of SCADA-like observables and
     hidden ground-truth RUL. policy in {'reactive','preventive','predictive'}."""
     rng = np.random.RandomState(seed)
@@ -187,6 +187,14 @@ def simulate(top, policy, seed, years=DEFAULT_YEARS, rounds_per_year=DEFAULT_ROU
         insrv_log = np.zeros((n_days, n), np.uint8)
         ci_cum = np.zeros(n_days, np.float64)     # cumulative customer-interruptions
         cmh_cum = np.zeros(n_days, np.float64)    # cumulative customer-hours
+    # model-as-policy: a trained model decides WHEN from OBSERVABLE history (additive; does not
+    # touch the other policies' RNG/logic). score_fn(day, load_hist, hot_hist, last_maint) -> risk.
+    model_mode = (policy == "model")
+    if model_mode and score_fn is None:
+        raise ValueError("policy 'model' requires score_fn(day, load_hist, hot_hist, last_maint)")
+    if model_mode:
+        mload_hist = np.zeros((n_days, n), np.float32)
+        mhot_hist = np.zeros((n_days, n), np.float32)
     events = []
     trip_causes = []                 # (day, tripped_asset, cause_asset) ground-truth explanation
     trip_cause_load = []             # transferred-loading contribution of that cause
@@ -225,6 +233,11 @@ def simulate(top, policy, seed, years=DEFAULT_YEARS, rounds_per_year=DEFAULT_ROU
         elif policy == "predictive":
             pof_now = np.clip(1 - rul/RUL_FULL, 0, 1)
             due = (pof_now > predict_thresh) & ~out
+        elif policy == "model":
+            # event-driven: service an asset when the model's risk score crosses a threshold
+            # (score_fn returns 0 before enough history, so no visits during warm-up).
+            probs = np.asarray(score_fn(day, mload_hist, mhot_hist, last_maint), float)
+            due = (probs > predict_thresh) & ~out
         elif policy == "reactive":
             due = np.zeros(n, bool)
         else:
@@ -280,6 +293,10 @@ def simulate(top, policy, seed, years=DEFAULT_YEARS, rounds_per_year=DEFAULT_ROU
             rul_log[day] = rul
             insrv_log[day] = (~(out_until > day)).astype(np.uint8)
             ci_cum[day] = saifi_n; cmh_cum[day] = saidi_n
+
+        if model_mode:               # keep observable history for the model's next decisions
+            mload_hist[day] = s + rng.normal(0, SCADA_NOISE, n)   # same SCADA-noise form as training data
+            mhot_hist[day] = hotspot(s)
 
     yrs = n_days/365.0
     summary = dict(case=top["case"], policy=policy, seed=int(seed), years=years,
