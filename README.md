@@ -32,6 +32,10 @@ pip install -r requirements.txt          # numpy, pandapower, networkx, scikit-l
 full datasheet. Each run file holds SCADA-like observables (`loading`, `hotspot`, `in_service`),
 hidden ground-truth `rul` (a **label**, never an input), `events`, and trip-cause `explanations`.
 
+> **Note:** the `.npz` files are **not committed to git** (see `.gitignore`) — regenerate them
+> bit-for-bit with `python scripts/make_benchmark.py`, or download the frozen release from Hugging Face
+> once it is public.
+
 ```python
 import numpy as np, json
 top = np.load("data/simetrics_benchmark/topology_oberrhein.npz", allow_pickle=True)
@@ -90,8 +94,8 @@ test rows, and score with `score_task1` for a fair comparison.
 
 > All reference baselines are **topology-blind** (per-asset tabular), yet the dataset contains a
 > verified spatial cascade signal (neighbour-failure lift 2.31× vs 1.49× null, z=8.8). Exploiting the
-> graph is the open opportunity. *(Lead-time / t-optimal analysis: `examples/lead_time_analysis.py`;
-> maintenance-policy spectrum, Task 3: `examples/spectrum_unified.py`.)*
+> graph is the open opportunity. *(Run a trained model as a Task-3 maintenance policy:
+> `examples/model_as_policy.py`.)*
 
 ---
 
@@ -111,3 +115,19 @@ exactly at 110 °C (C57.91 reference); preventive failure rate ≈ 0.05 /asset/y
 range). Failures include an **unpreventable external floor** and **contingency overload trips**, so
 SAIFI = 0 is impossible by design. Field validation on a real network is out of scope (it would be a
 pilot study). Full limitations: `FORMULATION.md` §14 and the datasheet.
+
+---
+
+## How to cite
+If you use SiMetrics in your research, please cite the paper:
+
+> G. A. Muhamad, K. Habib, and C. R. Winata, "SiMetrics: A Simulated Reliability Benchmark Dataset for
+> Predictive Maintenance in Power Distribution Systems," in *Proc. 2026 Int. Conf. on Technology and
+> Policy in Energy and Electric Power (ICT-PEP)*, 2026. (to appear)
+
+A machine-readable `CITATION.cff` is included — use GitHub's **"Cite this repository"** button.
+
+## License
+Code is released under the **MIT License** (see `LICENSE`). The accompanying dataset is released under
+**CC-BY-4.0**. SiMetrics uses only public test networks and synthetic, standards-anchored physics — no
+proprietary or utility operational data.

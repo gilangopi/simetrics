@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use SiMetrics, please cite the paper listed under preferred-citation."
+title: "SiMetrics: A Reliability Benchmark for Power Distribution Maintenance"
+abstract: >-
+  A fully reproducible, physics-informed simulator and dataset for benchmarking
+  machine-learning methods on medium-voltage distribution feeders, scored on the
+  reliability metrics utilities care about (SAIFI/SAIDI, IEEE 1366). Built entirely
+  on public test networks and synthetic, standards-anchored physics.
+type: software
+authors:
+  - family-names: Muhamad
+    given-names: Gilang Aulia
+    affiliation: PT PLN Icon Plus
+  - family-names: Habib
+    given-names: Khalid
+    affiliation: PT PLN Icon Plus
+  - family-names: Winata
+    given-names: Candra Restu
+    affiliation: PT PLN Icon Plus
+repository-code: "https://github.com/gilangopi/simetrics"
+license: MIT
+keywords:
+  - predictive-maintenance
+  - power-distribution
+  - reliability
+  - saifi
+  - saidi
+  - machine-learning-benchmark
+preferred-citation:
+  type: conference-paper
+  title: "SiMetrics: A Simulated Reliability Benchmark Dataset for Predictive Maintenance in Power Distribution Systems"
+  authors:
+    - family-names: Muhamad
+      given-names: Gilang Aulia
+    - family-names: Habib
+      given-names: Khalid
+    - family-names: Winata
+      given-names: Candra Restu
+  collection-title: "Proceedings of the 2026 International Conference on Technology and Policy in Energy and Electric Power (ICT-PEP)"
+  year: 2026
+  notes: "To appear. Paper ID 1571310215. DOI to be added upon publication."

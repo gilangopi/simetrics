@@ -1,5 +1,13 @@
 __pycache__/
 *.pyc
+*.egg-info/
+.ipynb_checkpoints/
+.vscode/
+
+# local outputs / paper artifacts (not part of the public benchmark)
+results/
+viz/
+
+# frozen dataset lives on Hugging Face; regenerate locally with scripts/make_benchmark.py
 data/simetrics_benchmark/*.npz
 data/simetrics_benchmark/data/*.npz
-viz/figures/
