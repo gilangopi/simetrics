@@ -1,41 +1,62 @@
 cff-version: 1.2.0
 message: "If you use SiMetrics, please cite the paper listed under preferred-citation."
-title: "SiMetrics: A Reliability Benchmark for Power Distribution Maintenance"
+title: "SiMetrics: A Simulated Reliability Benchmark Dataset for Predictive Maintenance in Power Distribution Systems"
 abstract: >-
-  A fully reproducible, physics-informed simulator and dataset for benchmarking
-  machine-learning methods on medium-voltage distribution feeders, scored on the
-  reliability metrics utilities care about (SAIFI/SAIDI, IEEE 1366). Built entirely
-  on public test networks and synthetic, standards-anchored physics.
+  As the energy transition accelerates, predictive maintenance of power distribution
+  infrastructure is critical. However, developing robust strategies is hindered by extreme
+  data scarcity because real-world data is inherently proprietary. Existing public benchmarks
+  target transmission operations or single-component remaining useful life rather than
+  utility-reported indices like SAIFI and SAIDI. Consequently, generating synthetic data
+  through physical simulations is essential to systematically study grid failures and
+  benchmark AI models. To bridge this gap, we introduce SiMetrics as a simulation-based
+  benchmark dataset and testbed for medium-voltage distribution networks. The simulator
+  couples IEEE C57.91-form Arrhenius thermal aging, three failure channels (wear-out, an
+  unpreventable external floor, and contingency overload trips), alongside customer-weighted
+  outage propagation per IEEE 1366. Evaluations utilize public test networks including CIGRE
+  Networks and MV Oberrhein modeled in pandapower. We define four primary tasks: failure
+  prognosis, remaining useful life regression, trip-cause attribution, and maintenance policy
+  optimization, while establishing robust tabular baselines. Our evaluation reveals two key
+  findings. First, the evaluated topology-blind tabular baselines achieve a maximum ROC-AUC of
+  0.843, while the dataset contains a statistically significant spatial cascade signal, with a
+  neighbor-failure lift of 2.31x, compared with 1.49x under a degree-preserving null model and
+  a z-score of 8.8. Second, the highest-AUC predictor does not yield the best maintenance
+  policy, motivating direct policy evaluation against operational indices. SiMetrics is
+  released to enable fair and repeatable comparisons of topology-aware prediction and
+  decision-making methods.
 type: software
 authors:
   - family-names: Muhamad
     given-names: Gilang Aulia
-    affiliation: PT PLN Icon Plus
+    email: gilang.muhamad@iconpln.co.id
+    affiliation: "PT Indonesia Comnets Plus (PLN Icon Plus), Jakarta, Indonesia"
   - family-names: Habib
     given-names: Khalid
-    affiliation: PT PLN Icon Plus
+    email: khalid.habib@iconpln.co.id
+    affiliation: "PT Indonesia Comnets Plus (PLN Icon Plus), Jakarta, Indonesia"
   - family-names: Winata
     given-names: Candra Restu
-    affiliation: PT PLN Icon Plus
+    email: candra.winata@iconpln.co.id
+    affiliation: "PT Indonesia Comnets Plus (PLN Icon Plus), Jakarta, Indonesia"
 repository-code: "https://github.com/gilangopi/simetrics"
 license: MIT
 keywords:
-  - predictive-maintenance
-  - power-distribution
-  - reliability
-  - saifi
-  - saidi
-  - machine-learning-benchmark
+  - predictive maintenance
+  - power distribution networks
+  - reliability indices
+  - machine learning benchmark
 preferred-citation:
   type: conference-paper
   title: "SiMetrics: A Simulated Reliability Benchmark Dataset for Predictive Maintenance in Power Distribution Systems"
   authors:
     - family-names: Muhamad
       given-names: Gilang Aulia
+      affiliation: "PT Indonesia Comnets Plus (PLN Icon Plus)"
     - family-names: Habib
       given-names: Khalid
+      affiliation: "PT Indonesia Comnets Plus (PLN Icon Plus)"
     - family-names: Winata
       given-names: Candra Restu
+      affiliation: "PT Indonesia Comnets Plus (PLN Icon Plus)"
   collection-title: "Proceedings of the 2026 International Conference on Technology and Policy in Energy and Electric Power (ICT-PEP)"
   year: 2026
   notes: "To appear. Paper ID 1571310215. DOI to be added upon publication."
