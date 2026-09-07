@@ -1,5 +1,5 @@
 """
-ml_policy.py , run a TRAINED baseline model as a closed-loop maintenance policy.
+model_as_policy.py , run a TRAINED baseline model as a closed-loop maintenance policy.
 
 The engine's `predictive` policy is an oracle (reads true RUL). Here we instead let a model trained on
 OBSERVABLES decide: each day the model scores every asset's P(wear-fail <=90d) from the same 9 features

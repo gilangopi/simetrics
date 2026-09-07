@@ -118,12 +118,13 @@ trips (§7c) are excluded, since no maintenance policy can pre-empt them.
 shipped harness deliberately does **not** score — it is left open for users. So the headline number
 **AUC = 0.843 is the 90-day failure-classification score, never an RUL accuracy.** A continuous RUL
 prediction — the predicted-vs-true "fuel gauge" trajectory rising and falling over time, the way a
-forecast is overlaid on a price series — is an optional T1b deliverable; a reference example is in
-`viz/make_rul_trajectory.py` (fig7).
+forecast is overlaid on a price series — is an optional Task-1b deliverable, left open for users to
+implement.
 
 ### §6b. Why a high AUC does NOT make a good policy (prediction ≠ decision)
 A recurring, important result in this benchmark: the model with the best Task-1 ROC-AUC (MLP, 0.843)
-can be one of the **worst** maintenance policies (see `viz/make_paradigm_shift.py`, fig8). This is not a
+can be one of the **worst** maintenance policies (reproducible with `examples/model_as_policy.py`, which
+runs each trained model as a closed-loop policy and traces its visits–SAIFI frontier). This is not a
 bug , it is the reason the benchmark scores the **decision** (Task 3), not just **prediction** (Task 1).
 ROC-AUC and policy-SAIFI measure fundamentally different things:
 

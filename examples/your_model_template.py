@@ -1,5 +1,5 @@
 """
-Template , plug YOUR model into SiMetrics Task 1 and compare to the leaderboard.
+your_model_template.py , plug YOUR model into SiMetrics Task 1 and compare to the leaderboard.
 
 Run from the repo root:
     python examples/your_model_template.py
