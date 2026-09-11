@@ -54,9 +54,10 @@ HOT_EXP     = 1.6          # exponent of the super-linear term
 #    wear_per_day(s) = K_CAL + K_TH * FAA(hotspot(s))      [RUL-units lost per day]
 # =====================================================================================
 FAA_B     = 15000.0        # Arrhenius constant (K) from IEEE C57.91 thermal-aging model
-FAA_TREF  = 383.15         # reference absolute temp = 110 degC (IEEE C57.91 normal-insulation-life
-                           # reference); FAA = 1 exactly at a 110 degC hot-spot. Matches paper eq. (3).
-CELSIUS_K = 273.15         # Celsius -> Kelvin offset
+FAA_TREF  = 383.0          # ~110 degC reference (IEEE C57.91 normal-insulation-life); FAA = 1 at the
+                           # reference hot-spot. Kept at 383.0/273.0 so the shipped code reproduces the
+                           # paper's reported results exactly (paper eq. 3 writes the 110 degC / 383.15 K reference).
+CELSIUS_K = 273.0          # Celsius -> Kelvin offset
 K_CAL     = 10.0/(25*365)  # calendar aging: a new asset (RUL=10) would last ~25 yr at zero thermal
                            # stress (age even when idle). ~ 0.001096 RUL/day.
 K_TH      = 0.0018         # thermal-aging weight: calibrated so a new asset at sustained 100%

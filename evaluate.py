@@ -47,7 +47,7 @@ FEATURE_NAMES = ["days_since_reset", "mean_load_60d", "std_load_60d", "trend_loa
 
 # ---------------------------------------------------------------------------- T1 featurizer
 def faa_proxy(hot):
-    return np.exp(15000.0/383.15 - 15000.0/(hot + 273.15))
+    return np.exp(15000.0/383.0 - 15000.0/(hot + 273.0))
 
 
 def build_xy(seeds, policy, n_assets, top, case=CASE):
