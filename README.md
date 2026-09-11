@@ -106,7 +106,8 @@ python scripts/validate_benchmark.py   # 10-check validation suite -> VALIDATION
 ```
 Every run is bit-identical for a given (case, policy, seed). The physics, every equation and every
 constant, is documented in **`FORMULATION.md`**; all constants live in **`simetrics/params.py`**
-(no hidden numbers).
+(no hidden numbers). **Every result in the paper is traced to the exact function that produces it in
+[`PAPER_TO_CODE.md`](PAPER_TO_CODE.md)** — with a one-line command to reproduce each number.
 
 ## Scope & honesty
 A **simulation** benchmark with a **calibrated synthetic** wear law anchored to the IEEE C57.91 form

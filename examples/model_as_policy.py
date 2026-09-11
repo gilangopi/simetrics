@@ -68,9 +68,11 @@ if __name__ == "__main__":
     print("building topology + training HistGB on reactive seeds 1-6 ...")
     top = simetrics.build_topology("oberrhein")
     clf = train_clf(top, "hgb")
-    print(f"  trained ({time.time()-t0:.0f}s). smoke-test quantile-threshold policy on seeds 7,8:")
+    print(f"  trained ({time.time()-t0:.0f}s). HistGB frontier at the paper's operating points "
+          f"(top 4/9/16/26/40%, seeds 1-8):")
     from evaluate import build_xy
-    n = len(top["ids"]); Xva, _, _ = build_xy([7], "reactive", n, top)
-    for r in frontier(top, clf, [0.880, 0.930, 0.965, 0.985, 0.995], seeds=[7, 8], Xref=Xva):
-        print(f"    top {100*(1-r['q']):4.1f}%: visits {r['visits']:5.0f}  SAIFI {r['saifi']:.2f}")
+    n = len(top["ids"]); Xref, _, _ = build_xy([7], "reactive", n, top)   # reference score set
+    for r in frontier(top, clf, [0.96, 0.91, 0.84, 0.74, 0.60], seeds=range(1, 9), Xref=Xref):
+        print(f"    top {100*(1-r['q']):4.0f}%: visits {r['visits']:6.0f}  "
+              f"SAIFI {r['saifi']:.2f}  SAIDI {r['saidi']:.1f}")
     print(f"  total {time.time()-t0:.0f}s")
