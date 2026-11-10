@@ -26,7 +26,7 @@ treat it as a label, not a feature.
 Protocol: train seeds 1-6, validate 7, test 8; report mean ± std over >=5 model seeds; never feed
 `rul`/`trip_causes` as input features (labels only).
 
-## Ground-truth explanations (PowerGraph-style, first at distribution level)
+## Ground-truth explanations (PowerGraph-style, at distribution level)
 Every overload trip (event code 4) carries its CAUSE SET in `trip_causes` (day, tripped_asset,
 cause_asset) with `trip_cause_load` (the transferred-loading contribution computed from power
 flow). This enables benchmarking explainability methods (does your model identify the true
@@ -42,6 +42,7 @@ for DISTRIBUTION contingency trips embedded in multi-year maintenance trajectori
 | **SimBench** | distribution | static grids + load/RES time series | no failures, no aging, no maintenance, not ML-task-ready |
 | **PSML / EGS** | mixed | PMU-style time series / synthetic ops | no maintenance decision task, no downstream-customer impact |
 | **NASA C-MAPSS** | component | run-to-failure RUL trajectories | single machine, no network/topology, no system-level reliability |
+| **Cauca transformers** (Data in Brief 2021) | distribution (real) | 2019-2020 records of distribution transformers (users, lightning density, energy not supplied) for failure classification | static single-asset tabular data, no topology or time-resolved aging, no SAIFI/SAIDI, no maintenance decision task |
 | **SiMetrics (this)** | **distribution** | **5-yr asset-health trajectories + maintenance regimes + IEEE-1366 customer impact + contingency coupling + trip explanations** | , |
 
 ## Files

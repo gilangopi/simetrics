@@ -38,6 +38,7 @@ authors:
     email: candra.winata@iconpln.co.id
     affiliation: "PT Indonesia Comnets Plus (PLN Icon Plus), Jakarta, Indonesia"
 repository-code: "https://github.com/gilangopi/simetrics"
+url: "https://ieeexplore.ieee.org/document/11762037"
 license: MIT
 keywords:
   - predictive maintenance
@@ -57,6 +58,15 @@ preferred-citation:
     - family-names: Winata
       given-names: Candra Restu
       affiliation: "PT Indonesia Comnets Plus (PLN Icon Plus)"
-  collection-title: "Proceedings of the 2026 International Conference on Technology and Policy in Energy and Electric Power (ICT-PEP)"
+  collection-title: "2026 International Conference on Technology and Policy in Energy and Electric Power (ICT-PEP)"
+  publisher:
+    name: IEEE
+  conference:
+    name: "2026 International Conference on Technology and Policy in Energy and Electric Power (ICT-PEP)"
+    location: "Banten, Indonesia"
   year: 2026
-  notes: "To appear. Paper ID 1571310215. DOI to be added upon publication."
+  start: 168
+  end: 173
+  isbn: "979-8-3195-3313-5"
+  doi: "10.1109/ICT-PEP71341.2026.11762037"
+  url: "https://ieeexplore.ieee.org/document/11762037"
