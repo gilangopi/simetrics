@@ -93,7 +93,9 @@ RUL            ← max(0, RUL − wear_per_day(s))          # each day
 ```
 **Constants & KEY ANCHOR:** `FAA_B=15000` K (Arrhenius constant, C57.91); **`FAA_TREF=383` K = 110 °C
 = the IEEE C57.91 normal-insulation-life reference hot-spot** → **FAA = 1 exactly at 110 °C** (verified:
-`faa(110)=1.0000`). `K_CAL=10/(25·365)≈0.001096` (a new asset, RUL=10, lasts ~25 yr if idle);
+`faa(110)=1.0000`). The paper (Eq. 3) writes the exact Kelvin form, T<sub>ref</sub> = 383.15 K with
+T + 273.15; the code uses the rounded 383 / 273. Both give FAA = 1 at 110 °C, and the rounded constants
+are the ones that generated every number reported in the paper. `K_CAL=10/(25·365)≈0.001096` (a new asset, RUL=10, lasts ~25 yr if idle);
 `K_TH=0.0018` (calibrated so a new asset at sustained 100% loading reaches end-of-life in ~2 yr).
 **Honest note:** this is a **calibrated SYNTHETIC** wear law **anchored to the C57.91 FORM**, not fitted
 to any utility's failure history (such data is not public). **Code:** `engine.py` `faa()`, `wear_per_day()`.
@@ -114,8 +116,8 @@ counts **wear failures only** (event code 0); the unpreventable external floor (
 trips (§7c) are excluded, since no maintenance policy can pre-empt them.
 
 **RUL is a different, separate task.** `rul` is the hidden ground-truth "fuel gauge" (0–10 RUL-units,
-**not years** — §10), shipped as a *label*. Regressing it is **Task 1b** (metric: MAE/RMSE), which the
-shipped harness deliberately does **not** score — it is left open for users. So the headline number
+**not years** — §10), shipped as a *label*. Regressing it is **Task 1b** (metric: MAE, paper Sec. VI-B), scored by
+`examples/rul_regression.py`; it is a separate, optional task. So the headline number
 **AUC = 0.843 is the 90-day failure-classification score, never an RUL accuracy.** A continuous RUL
 prediction — the predicted-vs-true "fuel gauge" trajectory rising and falling over time, the way a
 forecast is overlaid on a price series — is an optional Task-1b deliverable, left open for users to

@@ -25,7 +25,7 @@ Arrhenius thermal aging + calendar aging; three failure channels (end-of-life we
 age-independent external floor, contingency overload trips with a no-retrip cooldown); radial
 outage propagation to downstream customers (IEEE 1366); tie-switch restoration found by power-flow
 probing. Every random element draws from a single seeded RNG: same seed = bit-identical file.
-**Calibration anchors (honest):** preventive-fleet failure rate ~0.05 /asset/yr matches published
+**Calibration anchors (honest):** preventive-fleet failure rate ~0.047 /asset/yr matches published
 RBTS MV rates; reactive is the run-to-failure counterfactual (~0.34); trips are a 15-26% minority
 share. The wear law is calibrated-synthetic (anchored to the C57.91 FORM, not fitted to real
 failure histories, none are public).

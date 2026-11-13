@@ -31,10 +31,10 @@ everything else loads those arrays. Every physics constant lives in `simetrics/p
 | (1) | daily stress fraction | `engine.py` &rarr; `simulate` |
 | (2) | hot-spot temperature | `engine.py` &rarr; `hotspot` |
 | (3) | Arrhenius aging factor | `engine.py` &rarr; `faa` |
-| &mdash; | wear &amp; RUL update | `engine.py` &rarr; `wear_per_day`, `simulate` |
+| text | wear &amp; RUL update | `engine.py` &rarr; `wear_per_day`, `simulate` |
 | (4) | probability of failure | `engine.py` &rarr; `simulate` |
 | (5) | wear-out hazard | `engine.py` &rarr; `simulate` |
-| &mdash; | external-floor hazard | `engine.py` &rarr; `simulate` |
+| text | external-floor hazard | `engine.py` &rarr; `simulate` |
 | (6) | overload-trip probability | `engine.py` &rarr; `simulate` |
 | (7) | transferred contingency load | `engine.py` &rarr; `simulate` |
 | (8) | tie-transfer coupling matrix | `engine.py` &rarr; `_build_coupling` |
@@ -43,18 +43,24 @@ everything else loads those arrays. Every physics constant lives in `simetrics/p
 
 **Constants** (all in `simetrics/params.py`):
 
-| Symbol | Constant |
+| Paper symbol | Code constant |
 | --- | --- |
-| load scale &sigma; | `LOAD_SCALE` |
-| stress bounds | `S_FLOOR`, `S_CAP` |
-| demand curve | `SEASON_*`, `WEEK_*`, `DEMAND_*` |
-| hot-spot coeffs | `HOT_LIN`, `HOT_NONLIN`, `HOT_EXP` |
-| Arrhenius | `FAA_B`, `FAA_TREF` |
-| aging weights | `K_CAL`, `K_TH` |
-| PoF window | `RUL_FULL` |
-| wear hazard | `FAIL_BASE`, `PROT_MULT`, `PROTECT_D` |
-| external floor | `EXT_DAILY` |
-| trip / coupling | `TRIP_K`, `COUPLE_TH` |
+| &sigma; (load scale) | `LOAD_SCALE` |
+| S<sub>floor</sub>, S<sub>cap</sub> | `S_FLOOR`, `S_CAP` |
+| c(t) (demand curve) | `SEASON_*`, `WEEK_*`, `DEMAND_*` |
+| T<sub>ambient</sub> | `HOT_AMBIENT` (constant 30 &deg;C) |
+| K<sub>lin</sub>, K<sub>nonlin</sub>, &gamma; | `HOT_LIN`, `HOT_NONLIN`, `HOT_EXP` |
+| B, T<sub>ref</sub> | `FAA_B`, `FAA_TREF` (see note) |
+| K<sub>cal</sub>, K<sub>th</sub> | `K_CAL`, `K_TH` |
+| PoF window (RUL = 4) | `RUL_FULL` |
+| &beta;<sub>fail</sub>, &mu;<sub>maint</sub> (0.04 within 70 d) | `FAIL_BASE`, `PROT_MULT`, `PROTECT_D` |
+| h<sub>ext</sub> (0.02/365 per day) | `EXT_DAILY` |
+| K<sub>trip</sub> | `TRIP_K` |
+| &tau;<sub>couple</sub> | `COUPLE_TH` |
+
+**Note on Eq. (3).** The paper writes the exact Kelvin form (T<sub>ref</sub> = 383.15 K, T + 273.15). The
+code uses the rounded 383 / 273. Both give FAA = 1 at 110 &deg;C, and the rounded constants are the ones
+that generated every number reported in the paper.
 
 ## 2 &middot; Networks, dataset, observables (Sec. III-A, III-C)
 
@@ -68,21 +74,21 @@ everything else loads those arrays. Every physics constant lives in `simetrics/p
 
 | Task | Function |
 | --- | --- |
-| T1 &mdash; failure prognosis | `evaluate.py` &rarr; `build_xy`, `fit_model`, `score_task1`, `leaderboard` |
-| T1b &mdash; RUL regression | `examples/rul_regression.py` |
-| T2 &mdash; trip-cause attribution | `evaluate.py` &rarr; `score_task2` |
-| T3 &mdash; maintenance policy | `evaluate.py` &rarr; `score_policy`; `engine.py` &rarr; `simulate(policy="predictive")`; `examples/model_as_policy.py` &rarr; `frontier` |
+| T1, failure prognosis | `evaluate.py` &rarr; `build_xy`, `fit_model`, `score_task1`, `leaderboard` |
+| T1b, RUL regression | `examples/rul_regression.py` |
+| T2, trip-cause attribution | `evaluate.py` &rarr; `score_task2` |
+| T3, maintenance policy | `evaluate.py` &rarr; `score_policy`; `engine.py` &rarr; `simulate(policy="predictive")`; `examples/model_as_policy.py` &rarr; `frontier` |
 
 ## 4 &middot; Where each result comes from
 
 | Paper item | Function | Reproduce |
 | --- | --- | --- |
-| Table III &mdash; Task-1 leaderboard | `evaluate.py` &rarr; `leaderboard` | `python evaluate.py` |
-| Table I &mdash; validation suite | `scripts/validate_benchmark.py` | `python scripts/validate_benchmark.py` |
+| Table III, Task-1 leaderboard | `evaluate.py` &rarr; `leaderboard` | `python evaluate.py` |
+| Table I, validation suite | `scripts/validate_benchmark.py` | `python scripts/validate_benchmark.py` |
 | Cascade signal (Sec. VI-C) | `validate_benchmark.py` &rarr; `temporal_lift` | `python scripts/validate_benchmark.py` |
 | Concentrated impact (Sec. VI-C) | `examples/impact_concentration.py` | `python examples/impact_concentration.py` |
 | Task-1b RUL MAE (Sec. VI-B) | `examples/rul_regression.py` | `python examples/rul_regression.py` |
-| Table IV &mdash; maintenance policies | `examples/model_as_policy.py` &rarr; `frontier`; `evaluate.py` &rarr; `score_policy` | `python examples/model_as_policy.py` |
+| Table IV, maintenance policies | `examples/model_as_policy.py` &rarr; `frontier`; `evaluate.py` &rarr; `score_policy` | `python examples/model_as_policy.py` |
 | Reliability baselines (SAIFI/SAIDI) | `scripts/make_benchmark.py` &rarr; `summary.csv` | `python scripts/make_benchmark.py` |
 
 ## 5 &middot; Reproducing Table IV (cost-reliability frontier)

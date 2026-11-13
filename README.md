@@ -56,9 +56,9 @@ X, y = run["loading"], run["rul"]        # observable input ; hidden label
 | Task | Level | Type | Target | Metric |
 |---|---|---|---|---|
 | **T1 failure prognosis** | node×time | binary | wear-failure within H=90 d, from observables | ROC-AUC + Average Precision |
-| **T1b RUL regression** | node×time | regression | hidden `rul` | MAE / RMSE |
+| **T1b RUL regression** | node×time | regression | hidden `rul` | MAE |
 | **T2 trip-cause attribution** | event | explanation | which out asset caused each overload trip (`trip_causes`) | precision@k |
-| **T3 maintenance policy** | system | sequential | choose visits under budget → simulator scores SAIFI/SAIDI | SAIFI + SAIDI at iso-budget |
+| **T3 maintenance policy** | system | sequential | choose visits under budget → simulator scores SAIFI/SAIDI | SAIFI + SAIDI across a range of visit budgets |
 
 ---
 
@@ -90,6 +90,7 @@ test rows, and score with `score_task1` for a fair comparison.
 (they are labels); report mean ± std over ≥3 model seeds; use `evaluate.py`'s metric and split.
 
 ### Leaderboard , Task 1 (oberrhein, test = seed 8; reproduce with `python evaluate.py`)
+Paper Table III. Learned baselines are the mean over 3 model seeds (`MODEL_SEEDS` in `evaluate.py`).
 | Method | Topology-aware? | Test AUC | Test AP |
 |---|---|---|---|
 | days-since-service only (no learning) | n/a | 0.470 | 0.048 |
@@ -121,7 +122,7 @@ constant, is documented in **`FORMULATION.md`**; all constants live in **`simetr
 ## Scope & honesty
 A **simulation** benchmark with a **calibrated synthetic** wear law anchored to the IEEE C57.91 form
 (not fitted to real failure histories, which are not public). Anchors: aging-acceleration FAA = 1
-exactly at 110 °C (C57.91 reference); preventive failure rate ≈ 0.05 /asset/yr (within published RBTS
+exactly at 110 °C (C57.91 reference); preventive failure rate ≈ 0.047 /asset/yr (within published RBTS
 range). Failures include an **unpreventable external floor** and **contingency overload trips**, so
 SAIFI = 0 is impossible by design. Field validation on a real network is out of scope (it would be a
 pilot study). Full limitations: `FORMULATION.md` §14 and the datasheet.

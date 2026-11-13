@@ -3,7 +3,7 @@ validate_benchmark.py , formal validation suite proving the SiMetrics benchmark 
 research-grade: reproducible, stable, physically sane, separable, GNN-relevant, learnable.
 
 V1  Reproducibility   same seed -> bit-identical run (arrays compared exactly)
-V2  Stability         20 seeds: CV of SAIFI / failures per policy (PASS < 25%)
+V2a/V2b Stability     20 seeds: CV of SAIFI / failures, reactive (a) / preventive (b) (PASS < 25%)
 V3  Monotonicity      more preventive rounds -> fewer wear failures (1x > 2x > 4x)
 V4  External floor    external failures ~ n*years*EXT rate, invariant to policy
 V5  Prognosability    wear failures happen at HIGH PoF (predictable wear-out, not random)
@@ -85,7 +85,7 @@ for pol, kw in [("reactive", {}), ("preventive", dict(rounds_per_year=2))]:
     sem8 = cv_sa/np.sqrt(8)          # stability of the published 8-seed reference mean
     # rare-event noise floor: weighted-Poisson CV expected from counts + customer weights
     w = top["down"]; cv_floor = 100*np.sqrt((np.mean(w**2)/np.mean(w)**2) / max(fl.mean(), 1))
-    verdict("V2", f"stability {pol} (n=20)",
+    verdict("V2a" if pol == "reactive" else "V2b", f"stability {pol} (n=20)",
             cv_fl < 25 and sem8 < 12,
             f"SAIFI {sa.mean():.3f} run-CV {cv_sa:.0f}% (rare-event floor ~{cv_floor:.0f}%) | "
             f"8-seed reference SEM {sem8:.0f}% | failures {fl.mean():.0f} CV {cv_fl:.0f}%")

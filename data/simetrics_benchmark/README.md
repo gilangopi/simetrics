@@ -20,10 +20,10 @@ treat it as a label, not a feature.
 | Task | Level | Type | Target | Recommended metric |
 |---|---|---|---|---|
 | **T1 failure prognosis** | node x time | binary cls | wear-failure within H days (H=90 default) from observables | ROC-AUC + average precision (positives ~5%) |
-| **T1b RUL regression** | node x time | regression | hidden `rul` label | MAE / RMSE |
+| **T1b RUL regression** | node x time | regression | hidden `rul` label | MAE |
 | **T2 trip-cause attribution** | event | explanation | `trip_causes` ground truth: which outaged asset(s) caused each overload trip | precision@k vs cause set |
-| **T3 maintenance policy** | system | sequential decision | choose visits under a budget; simulator scores SAIFI / SAIDI / visits / wasted-life | SAIFI + SAIDI at iso-budget vs the shipped baselines |
-Protocol: train seeds 1-6, validate 7, test 8; report mean ± std over >=5 model seeds; never feed
+| **T3 maintenance policy** | system | sequential decision | choose visits under a budget; simulator scores SAIFI / SAIDI / visits / wasted-life | SAIFI + SAIDI across a range of visit budgets vs the shipped baselines |
+Protocol: train seeds 1-6, validate 7, test 8; report mean ± std over >=3 model seeds (the reference baselines use 3); never feed
 `rul`/`trip_causes` as input features (labels only).
 
 ## Ground-truth explanations (PowerGraph-style, at distribution level)
