@@ -152,6 +152,9 @@ If you use SiMetrics in your research, please cite the paper:
 
 A machine-readable `CITATION.cff` is included, so GitHub's **"Cite this repository"** button gives the same reference.
 
+## Contributing
+Contributions are welcome: new models, leaderboard results, bug fixes and documentation. Please read **[`CONTRIBUTING.md`](CONTRIBUTING.md)** first. It covers the evaluation protocol every reported result must follow, how to submit a leaderboard entry, and why changes to the simulator need an issue before code. Bugs and leaderboard submissions have ready-made templates under **Issues**.
+
 ## License
 Code is released under the **MIT License** (see `LICENSE`). The accompanying dataset is released under
 **CC-BY-4.0**. SiMetrics uses only public test networks and synthetic, standards-anchored physics, and no
