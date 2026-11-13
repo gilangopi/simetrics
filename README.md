@@ -1,7 +1,7 @@
 # SiMetrics
 ### An open **sim**ulation benchmark for distribution-grid reliability **metrics** (predictive maintenance)
 
-*An open research project on distribution-grid reliability benchmarking by Gilang Aulia Muhamad, Khalid Habib and Candra Restu Winata (PLN Icon Plus).*
+*An open research project on distribution-grid reliability benchmarking by Gilang Aulia Muhamad, Khalid Habib and Candra Restu Winata.*
 
 [![Paper](https://img.shields.io/badge/IEEE%20Xplore-ICT--PEP%202026-00629B)](https://ieeexplore.ieee.org/document/11762037)
 [![DOI](https://img.shields.io/badge/DOI-10.1109%2FICT--PEP71341.2026.11762037-blue)](https://doi.org/10.1109/ICT-PEP71341.2026.11762037)
@@ -23,13 +23,10 @@ operational data is used.**
 ---
 
 ## Why it exists
-Adjacent public resources cover transmission operation (PowerGraph, Grid2Op), static distribution
-snapshots (SimBench), single-component RUL (NASA C-MAPSS), or real distribution-transformer records for
-failure classification (the Cauca transformer dataset, Bravo M. et al., *Data in Brief* 2021). To our
-knowledge none of them combines **asset aging over time + maintenance regimes + customer-weighted
-reliability (SAIFI/SAIDI) + contingency coupling + a maintenance-policy task** in one ML-ready package,
-which is the combination SiMetrics provides. Real records such as the Cauca dataset remain the natural
-complement for testing whether methods developed here transfer to field data.
+Adjacent public benchmarks cover transmission operation (PowerGraph, Grid2Op), static distribution
+snapshots (SimBench), or single-component RUL (NASA C-MAPSS). None of them combines **asset aging over
+time + maintenance regimes + customer-weighted reliability (SAIFI/SAIDI) + contingency coupling + a
+maintenance-policy task** in one ML-ready package, which is the combination SiMetrics provides.
 
 ## Install
 ```bash

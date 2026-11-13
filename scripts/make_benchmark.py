@@ -145,7 +145,6 @@ for DISTRIBUTION contingency trips embedded in multi-year maintenance trajectori
 | **SimBench** | distribution | static grids + load/RES time series | no failures, no aging, no maintenance, not ML-task-ready |
 | **PSML / EGS** | mixed | PMU-style time series / synthetic ops | no maintenance decision task, no downstream-customer impact |
 | **NASA C-MAPSS** | component | run-to-failure RUL trajectories | single machine, no network/topology, no system-level reliability |
-| **Cauca transformers** (Data in Brief 2021) | distribution (real) | 2019-2020 records of distribution transformers (users, lightning density, energy not supplied) for failure classification | static single-asset tabular data, no topology or time-resolved aging, no SAIFI/SAIDI, no maintenance decision task |
 | **SiMetrics (this)** | **distribution** | **5-yr asset-health trajectories + maintenance regimes + IEEE-1366 customer impact + contingency coupling + trip explanations** | , |
 
 ## Files
